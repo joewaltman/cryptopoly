@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.24;
 
 contract PropertyManagement{
     struct Property {
@@ -36,7 +36,7 @@ contract PropertyManagement{
 
     }
 
-    function checkAvailability(string _venueId) public returns (bool){
+    function checkAvailability(string _venueId) public view returns (bool){
         if(venueIdToProperty[_venueId] == 0){
             return false;
         }
@@ -45,7 +45,7 @@ contract PropertyManagement{
         }
     }
 
-    function getOwnerDetails(string _venueId) public returns (address) {
+    function getOwnerDetails(string _venueId) public view returns (address) {
         if(checkAvailability(_venueId)){
             return propertyToOwner[venueIdToProperty[_venueId]];
         }
@@ -61,13 +61,13 @@ contract PropertyManagement{
         }
     }
 
-    function getPropertyByVenue(string _venueId) public returns (uint) {
+    function getPropertyByVenue(string _venueId) public view returns (uint) {
         if(checkAvailability(_venueId)){
             return venueIdToProperty[_venueId] - 1;
         }
     }
 
-    function isPropertyOwned(string _venueId) public returns (bool) {
+    function isPropertyOwned(string _venueId) public view returns (bool) {
         if(!checkAvailability(_venueId)){
             return false;
         }
