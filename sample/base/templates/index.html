@@ -1,105 +1,11 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Geolocation</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script>
-      // Note: This example requires that you consent to location sharing when
-      // prompted by your browser. If you see the error "The Geolocation service
-      // failed.", it means you probably did not give permission for the browser to
-      // locate you.
-      var map, infoWindow;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 18
-        });
-        // Try HTML5 geolocation.
 
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            console.log(pos)
-
-            var marker = new google.maps.Marker({
-                position: pos,
-                map: map,
-                title: 'My location!'
-            });
-            var latlngbounds = new google.maps.LatLngBounds();
-            map.setCenter(pos);
-            $.get( "/foursquare/places/", { lat: pos.lat, lng: pos.lng } )
-                  .done(function( data ) {
-                    $.each( data.data, function() {
-                        var markerImage = {
-                            url: 'https://image.flaticon.com/icons/svg/33/33622.svg',
-                            scaledSize: new google.maps.Size(24, 24),
-                            origin: new google.maps.Point(0,0),
-                            anchor: new google.maps.Point(24/2, 24)
-                        },
-                        markerOptions = {
-                            map: map,
-                            position: new google.maps.LatLng(this.venue.location.lat, this.venue.location.lng),
-                            icon: markerImage,
-                            title: this.venue.name
-                            },
-                        marker = new google.maps.Marker(markerOptions);
-                        latlngbounds.extend(marker.position);
-                    });
-
-                    //Center map and adjust Zoom based on the position of all markers.
-                    map.setCenter(latlngbounds.getCenter());
-                    map.fitBounds(latlngbounds);
-
-                  });
-
-            google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
-                  this.setZoom(map.getZoom()-1);
-
-                  if (this.getZoom() > 15) {
-                    this.setZoom(15);
-                  }
-                });
-
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
-      }
-
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        alert("Geo location not supported, Please enable geolocation settings in browser");
-      }
-
-
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYNDRW2SF5b5uYdApkP3EHzVTIOUE1pOE&callback=initMap">
-    </script>
-
-  </body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+  <div class="map" id="map"></div>
+  <div id="placeContainer">
+   <table id="placesData" class="display" style="width:100%">
+  </table>
+  </div>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYNDRW2SF5b5uYdApkP3EHzVTIOUE1pOE&callback=initMap">
+  </script>
+{% endblock %}

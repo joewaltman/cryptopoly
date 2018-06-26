@@ -75,10 +75,14 @@ WSGI_APPLICATION = 'sample.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'foursquare',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
 }
 
 
@@ -86,18 +90,18 @@ DATABASES = {
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 
@@ -117,7 +121,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 STATIC_URL = '/static/'
-FOURSQUARE_CLIENT_ID = ""
-FOURSQUARE_CLIENT_SECRET = ""
+STATIC_ROOT = '/static/'
+STATICFILES_DIRS = (
+  os.path.join(SITE_ROOT, 'static/'),
+)
+FOURSQUARE_CLIENT_ID = "NUWXCFSESKJTTL2UBR5OQO0TN1XMHKNYGTEERB5RSKCEHHNS"
+FOURSQUARE_CLIENT_SECRET = "2IJK20HEYLVV0IAZHF11RTFPVXM44ZSH3Z4VA43O0QNPWPPK"

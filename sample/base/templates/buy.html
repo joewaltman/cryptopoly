@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<title>Maps FourSquare</title>
+<div class="container-fluid p-4">
+    <!-- Address and Map -->
+    <div class="row equal">
+        <div class="col-7 ">
+            <h3> {{venue.name}} </h3>
+
+            <span>{{venue.address}}</span>
+            <br>
+        </div>
+        <div id="map" class="col-5" style="height: 40vh;"></div>
+
+    </div>
+
+
+    <!-- Buy Button -->
+    <div class="row p-4">
+       <div class="col-12 text-center">
+           <button type="button" id="status" name="{{venue.name}}" latitude="{{venue.latitude}}"
+                   longitude="{{venue.latitude}}" venueId="{{venue.venue_id}}" disabled="disabled" class="" >
+               Checking status
+           </button>
+       </div>
+    </div>
+
+    <!-- Nearby available Properties -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <h3>Nearby Available Properties</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for related_venue in related_venues %}
+                    <tr>
+                        <td>{{related_venue.name}}</td>
+                        <td>{{related_venue.address}}</td>
+                        <td>$ 0.000</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<script>
+    var lat = {{venue.latitude}}
+    var long = {{venue.longitude}}
+    var name = "{{venue.name}}"
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYNDRW2SF5b5uYdApkP3EHzVTIOUE1pOE&callback=buyMap"></script>
+<script src="{% static 'js/buy.js' %}"></script>
+{% endblock %}
